@@ -11,6 +11,10 @@ const limpiarHTML = () => {
     }
 }
 
+const sincronizarStorage = () => {
+    localStorage.setItem("carrito", JSON.stringify(articulosCarrito));
+};
+
 const carritoHTML = () => {
     limpiarHTML();
 
@@ -38,6 +42,8 @@ const carritoHTML = () => {
         
         contenedorCarrito.appendChild(row);
     })
+      
+    sincronizarStorage();
 }
 
 const leerDatosCurso = (curso) => {
@@ -67,10 +73,7 @@ const leerDatosCurso = (curso) => {
     }else{
         articulosCarrito = [...articulosCarrito, infoCurso];
     }
-
-    console.log(infoCurso);
-    console.log(articulosCarrito);
-
+      
     carritoHTML(infoCurso);
 }
 
@@ -94,6 +97,11 @@ const eliminarCursosCarrito = (e) => {
 
 //funcion que agrupa los event listener
 const registrarEventListeners = () => {
+    document.addEventListener("DOMContentLoaded", () => {
+      articulosCarrito = JSON.parse(localStorage.getItem("carrito")) ?? [];
+      carritoHTML();
+    });
+    
     listarCursos.addEventListener('click', agregarCurso);
 
     carrito.addEventListener('click', eliminarCursosCarrito);
